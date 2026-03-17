@@ -9,6 +9,13 @@ listUsers(){
     awk -F: '$3 >= 1000 {print $1}' /etc/passwd
 }
 
+
+backupIntranetDir(){
+    #Backing up the Intranet FOlder and saving it as zip
+    sudo zip -r "/var/www/backups/$(date +%d-%m-%y_%H:%M)_intranet_backup.zip" /var/www/html/intranet
+}
+
+
 while [ "$INPUT_STRING" != "quit" ]
 do
     clearScreen
@@ -30,7 +37,7 @@ do
     case $userChoice in
         1) echo "List of Users: " ; listUsers;;
         2) echo "Running Option 2";;
-        3) echo "Running Option 3";;
+        3) backupIntranetDir;;
         4) echo "Running Option 4";;
         5) echo "Running Option 5";;
         6) echo "Running Option 6";;
