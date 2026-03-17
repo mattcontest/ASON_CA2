@@ -5,6 +5,10 @@ clearScreen(){
     clear
 }
 
+listUsers(){
+    awk -F: '$3 >= 1000 {print $1}' /etc/passwd
+}
+
 while [ "$INPUT_STRING" != "quit" ]
 do
     clearScreen
@@ -24,7 +28,7 @@ do
     read userChoice
     # clear
     case $userChoice in
-        1) echo "Running Option 1";;
+        1) echo "List of Users: " ; listUsers;;
         2) echo "Running Option 2";;
         3) echo "Running Option 3";;
         4) echo "Running Option 4";;
@@ -34,7 +38,7 @@ do
         q) break;;
         *) echo "Invalid Option";;
     esac
-    
+
 
     echo "Press any key to continue: "
     read key
