@@ -15,6 +15,12 @@ backupIntranetDir(){
     sudo zip -r "/var/www/backups/$(date +%d-%m-%y_%H:%M)_intranet_backup.zip" /var/www/html/intranet
 }
 
+backupLiveDir(){
+    #Backing up the Intranet FOlder and saving it as zip
+    sudo zip -r "/var/www/backups/$(date +%d-%m-%y_%H:%M)_live_backup.zip" /var/www/html/live
+    echo "Backup for live ~ Created"
+}
+
 auditReport(){
     #Creating an Audit Report
     sudo sh -c 'ausearch -f /var/www/html/intranet/ | sudo aureport -f -i > /var/www/backups/audit_report.txt'
@@ -35,7 +41,6 @@ do
     echo "4. Backup Live Directory"
     echo "5. Transfer Updates to Website"
     echo "6. Audit Reports"
-    echo "7. System Health Reports"
     echo "q. Quit"
     echo "Enter your choice :  "
     
@@ -45,10 +50,9 @@ do
         1) echo "List of Users: " ; listUsers;;
         2) echo "Running Option 2";;
         3) backupIntranetDir;;
-        4) echo "Running Option 4";;
+        4) backupLiveDir;;
         5) echo "Running Option 5";;
         6) auditReport;;
-        7) echo "Running Option 7";;
         q) break;;
         *) echo "Invalid Option";;
     esac
