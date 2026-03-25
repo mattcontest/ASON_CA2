@@ -5,6 +5,12 @@ clearScreen(){
     clear
 }
 
+addWebUser(){
+    echo "Which user to add to the intranet group?"
+    read user
+    sudo usermod -G intranet $user
+}
+
 listUsers(){
     awk -F: '$3 >= 1000 {print $1}' /etc/passwd
 }
@@ -12,18 +18,19 @@ listUsers(){
 
 backupIntranetDir(){
     #Backing up the Intranet FOlder and saving it as zip
-    sudo zip -r "/var/www/backups/$(date +%d-%m-%y_%H:%M)_intranet_backup.zip" /var/www/html/intranet
+    zip -r "/var/www/backups/$(date +%d-%m-%y_%H:%M)_intranet_backup.zip" /var/www/html/intranet
 }
 
 backupLiveDir(){
     #Backing up the Intranet FOlder and saving it as zip
-    sudo zip -r "/var/www/backups/$(date +%d-%m-%y_%H:%M)_live_backup.zip" /var/www/html/live
+    zip -r "/var/www/backups/$(date +%d-%m-%y_%H:%M)_live_backup.zip" /var/www/html/live
     echo "Backup for live ~ Created"
 }
 
 auditReport(){
     #Creating an Audit Report
-    sudo sh -c 'ausearch -f /var/www/html/intranet/ | sudo aureport -f -i > /var/www/backups/audit_report.txt'
+    #Here it asks for root password to log the last movements.
+    su -c "/usr/sbin/ausearch -k intranet_watch --start recent | /usr/sbin/aureport -f -i > /var/www/backups/audit_report.txt"
     echo "Audit Report created. Available @ backups"
     cat /var/www/backups/audit_report.txt
 }
@@ -48,7 +55,7 @@ do
     # clear
     case $userChoice in
         1) echo "List of Users: " ; listUsers;;
-        2) echo "Running Option 2";;
+        2) addWebUser;;
         3) backupIntranetDir;;
         4) backupLiveDir;;
         5) echo "Running Option 5";;
