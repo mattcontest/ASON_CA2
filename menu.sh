@@ -15,6 +15,13 @@ backupIntranetDir(){
     sudo zip -r "/var/www/backups/$(date +%d-%m-%y_%H:%M)_intranet_backup.zip" /var/www/html/intranet
 }
 
+auditReport(){
+    #Creating an Audit Report
+    sudo sh -c 'ausearch -f /var/www/html/intranet/ | sudo aureport -f -i > /var/www/backups/audit_report.txt'
+    echo "Audit Report created. Available @ backups"
+    cat /var/www/backups/audit_report.txt
+}
+
 
 while [ "$INPUT_STRING" != "quit" ]
 do
@@ -40,7 +47,7 @@ do
         3) backupIntranetDir;;
         4) echo "Running Option 4";;
         5) echo "Running Option 5";;
-        6) echo "Running Option 6";;
+        6) auditReport;;
         7) echo "Running Option 7";;
         q) break;;
         *) echo "Invalid Option";;
