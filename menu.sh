@@ -35,6 +35,14 @@ auditReport(){
     cat /var/www/backups/audit_report.txt
 }
 
+transferUpdates(){
+    #Using -ru to also copying all the subfolders
+    su -c "chmod 000 /var/www/html/live && \
+    cp -ru /var/www/html/intranet/* /var/www/html/live/ && \
+    chmod 770 /var/www/html/live"
+    echo "Transferred Intranet files to Live"
+}
+
 
 while [ "$INPUT_STRING" != "quit" ]
 do
@@ -58,7 +66,7 @@ do
         2) addWebUser;;
         3) backupIntranetDir;;
         4) backupLiveDir;;
-        5) echo "Running Option 5";;
+        5) transferUpdates;;
         6) auditReport;;
         q) break;;
         *) echo "Invalid Option";;
